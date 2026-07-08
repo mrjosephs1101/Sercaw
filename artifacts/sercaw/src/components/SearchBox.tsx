@@ -34,9 +34,17 @@ export function SearchBox({ initialQuery = '', autoFocus = false, className }: S
     }
   }, [autoFocus]);
 
+  const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5MB — keeps the base64 payload comfortably under the API's body-size limit
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (file.size > MAX_IMAGE_BYTES) {
+      window.alert('That image is too large. Please choose a photo under 5MB.');
+      e.target.value = '';
+      return;
+    }
 
     const reader = new FileReader();
     reader.onload = (evt) => {

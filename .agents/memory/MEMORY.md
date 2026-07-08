@@ -1,0 +1,2 @@
+- [OpenRouter free-model reliability](openrouter-free-models.md) — some free `:free` OpenRouter models are persistently rate-limited; pick low-traffic ones and fall through a list.
+- [Live web search from backend](live-web-search-backend.md) — DuckDuckGo/other scraping is blocked from Replit server IPs; use a real search API key (e.g. Serper.dev) instead.

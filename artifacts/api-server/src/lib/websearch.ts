@@ -1,4 +1,3 @@
-import * as cheerio from "cheerio";
 import { logger } from "./logger";
 
 export interface WebSearchResult {
@@ -8,22 +7,37 @@ export interface WebSearchResult {
   displayUrl: string;
 }
 
+if (!process.env.SERPER_API_KEY) {
+  throw new Error(
+    "SERPER_API_KEY must be set. Did you forget to add your Serper.dev API key?",
+  );
+}
+
+interface SerperOrganicResult {
+  title?: string;
+  link?: string;
+  snippet?: string;
+}
+
+interface SerperResponse {
+  organic?: SerperOrganicResult[];
+}
+
 /**
- * Live web search backed by DuckDuckGo's HTML results endpoint. No API key
- * required — this is what lets Sercaw crawl the open web for every query.
+ * Live web search backed by Serper.dev's Google Search API. This is what
+ * lets Sercaw crawl the real, entire internet for every query.
  */
 export async function searchTheWeb(
   query: string,
   limit = 8,
 ): Promise<WebSearchResult[]> {
-  const response = await fetch("https://html.duckduckgo.com/html/", {
+  const response = await fetch("https://google.serper.dev/search", {
     method: "POST",
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+      "X-API-KEY": process.env.SERPER_API_KEY!,
+      "Content-Type": "application/json",
     },
-    body: new URLSearchParams({ q: query }).toString(),
+    body: JSON.stringify({ q: query, num: limit }),
   });
 
   if (!response.ok) {
@@ -34,55 +48,29 @@ export async function searchTheWeb(
     throw new Error(`Web search failed with status ${response.status}`);
   }
 
-  const html = await response.text();
-  const $ = cheerio.load(html);
+  const data = (await response.json()) as SerperResponse;
+
   const results: WebSearchResult[] = [];
+  for (const item of data.organic ?? []) {
+    if (results.length >= limit) break;
+    if (!item.title || !item.link) continue;
 
-  $(".result").each((_, el) => {
-    if (results.length >= limit) return;
-
-    const titleEl = $(el).find(".result__a").first();
-    const snippetEl = $(el).find(".result__snippet").first();
-    const rawHref = titleEl.attr("href");
-    if (!rawHref) return;
-
-    const url = resolveDuckDuckGoUrl(rawHref);
-    if (!url) return;
-
-    const title = titleEl.text().trim();
-    if (!title) return;
-
+    // Drop entries with malformed URLs rather than passing them through —
+    // the frontend renders result.url with new URL(...) and would crash on garbage input.
     let displayUrl: string;
     try {
-      displayUrl = new URL(url).hostname.replace(/^www\./, "");
+      displayUrl = new URL(item.link).hostname.replace(/^www\./, "");
     } catch {
-      displayUrl = url;
+      continue;
     }
 
     results.push({
-      title,
-      url,
-      snippet: snippetEl.text().trim(),
+      title: item.title,
+      url: item.link,
+      snippet: item.snippet ?? "",
       displayUrl,
     });
-  });
+  }
 
   return results;
-}
-
-/** DuckDuckGo's HTML endpoint wraps result links in a redirect; unwrap it. */
-function resolveDuckDuckGoUrl(href: string): string | null {
-  try {
-    const url = new URL(href, "https://duckduckgo.com");
-    const uddg = url.searchParams.get("uddg");
-    if (uddg) {
-      return decodeURIComponent(uddg);
-    }
-    if (url.hostname.includes("duckduckgo.com")) {
-      return null;
-    }
-    return url.toString();
-  } catch {
-    return null;
-  }
 }

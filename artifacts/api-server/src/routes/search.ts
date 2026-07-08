@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
 import { SearchBody, SearchResponse } from "@workspace/api-zod";
-import { openrouter, OVERVIEW_MODEL, VISION_MODEL } from "../lib/openrouter";
+import { openrouter, OVERVIEW_MODELS, VISION_MODEL } from "../lib/openrouter";
 import { searchTheWeb, type WebSearchResult } from "../lib/websearch";
 
 const router: IRouter = Router();
@@ -97,16 +97,18 @@ async function resolveQueryFromImage(
   return text.replace(/^["']|["']$/g, "");
 }
 
-/** Uses OpenRouter's gpt-oss-120b to summarize the top web results into a Featherpilot overview. */
+/** Summarizes the top web results into a Featherpilot AI overview, trying free OpenRouter models in order. */
 async function buildOverview(
   query: string,
   results: WebSearchResult[],
   log: { error: (obj: unknown, msg: string) => void },
 ): Promise<{ summary: string; model: string; sources: { title: string; url: string }[] }> {
+  const sources = results.slice(0, 6).map((r) => ({ title: r.title, url: r.url }));
+
   if (results.length === 0) {
     return {
       summary: `Featherpilot couldn't find any live results for "${query}" right now.`,
-      model: OVERVIEW_MODEL,
+      model: OVERVIEW_MODELS[0],
       sources: [],
     };
   }
@@ -118,38 +120,42 @@ async function buildOverview(
     )
     .join("\n\n");
 
-  try {
-    const completion = await openrouter.chat.completions.create({
-      model: OVERVIEW_MODEL,
-      max_tokens: 500,
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are Featherpilot, the AI overview assistant built into the Sercaw search engine. Write a concise, factual, neutral overview (2-5 sentences) answering the user's query using ONLY the provided web results. Cite sources inline using bracketed numbers like [1] that match the numbered list. Do not fabricate information beyond what the sources say. Do not use markdown headers.",
-        },
-        {
-          role: "user",
-          content: `Query: ${query}\n\nWeb results:\n${sourceList}`,
-        },
-      ],
-    });
+  const messages: Parameters<typeof openrouter.chat.completions.create>[0]["messages"] = [
+    {
+      role: "system",
+      content:
+        "You are Featherpilot, the AI overview assistant built into the Sercaw search engine. Write a concise, factual, neutral overview (2-5 sentences) answering the user's query using ONLY the provided web results. Cite sources inline using bracketed numbers like [1] that match the numbered list. Do not fabricate information beyond what the sources say. Do not use markdown headers.",
+    },
+    {
+      role: "user",
+      content: `Query: ${query}\n\nWeb results:\n${sourceList}`,
+    },
+  ];
 
-    const summary = completion.choices[0]?.message?.content?.trim();
+  // Free OpenRouter models share a public rate-limit pool and can be
+  // temporarily saturated — fall through the list until one responds.
+  for (const model of OVERVIEW_MODELS) {
+    try {
+      const completion = await openrouter.chat.completions.create({
+        model,
+        max_tokens: 500,
+        messages,
+      });
 
-    return {
-      summary: summary || FALLBACK_OVERVIEW,
-      model: OVERVIEW_MODEL,
-      sources: results.slice(0, 6).map((r) => ({ title: r.title, url: r.url })),
-    };
-  } catch (err) {
-    log.error({ err }, "Featherpilot overview generation failed");
-    return {
-      summary: FALLBACK_OVERVIEW,
-      model: OVERVIEW_MODEL,
-      sources: results.slice(0, 6).map((r) => ({ title: r.title, url: r.url })),
-    };
+      const summary = completion.choices[0]?.message?.content?.trim();
+      if (summary) {
+        return { summary, model, sources };
+      }
+    } catch (err) {
+      log.error({ err, model }, "Featherpilot overview generation failed");
+    }
   }
+
+  return {
+    summary: FALLBACK_OVERVIEW,
+    model: OVERVIEW_MODELS[0],
+    sources,
+  };
 }
 
 export default router;

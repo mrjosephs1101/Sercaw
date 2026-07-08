@@ -11,8 +11,11 @@ export const openrouter = new OpenAI({
   apiKey: process.env.OPENROUTER_API_KEY,
 });
 
-/** Text model that writes the Featherpilot AI overview from search results. */
-export const OVERVIEW_MODEL = "openai/gpt-oss-120b:free";
+/** Text models that write the Featherpilot AI overview from search results, tried in order. */
+export const OVERVIEW_MODELS = [
+  "openai/gpt-oss-20b:free",
+  "nvidia/nemotron-nano-9b-v2:free",
+] as const;
 
 /** Vision-capable model used to turn an uploaded image into a search query. */
 export const VISION_MODEL = "nvidia/nemotron-nano-12b-v2-vl:free";

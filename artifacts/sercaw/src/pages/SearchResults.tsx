@@ -161,16 +161,23 @@ export default function SearchResults() {
             {/* Organic Results */}
             <div className="space-y-8">
               {data.results && data.results.length > 0 ? (
-                data.results.map((result, idx) => (
+                data.results.map((result, idx) => {
+                  let hostname = result.displayUrl;
+                  try {
+                    hostname = new URL(result.url).hostname.replace(/^www\./, '');
+                  } catch {
+                    // Fall back to the server-provided displayUrl if the URL is malformed.
+                  }
+                  return (
                   <article key={idx} className="group flex flex-col gap-1 max-w-3xl">
                     <a href={result.url} className="flex items-center gap-2 text-sm text-foreground mb-1">
                       <div className="w-6 h-6 bg-secondary rounded-full flex items-center justify-center flex-shrink-0 border border-border">
                         <span className="text-[10px] font-bold opacity-60">
-                          {new URL(result.url).hostname.replace('www.', '').charAt(0).toUpperCase()}
+                          {(hostname.charAt(0) || '?').toUpperCase()}
                         </span>
                       </div>
                       <div className="flex flex-col line-clamp-1">
-                        <span className="font-medium text-foreground/90 text-sm truncate">{new URL(result.url).hostname.replace('www.', '')}</span>
+                        <span className="font-medium text-foreground/90 text-sm truncate">{hostname}</span>
                         <span className="text-xs text-muted-foreground truncate">{result.displayUrl}</span>
                       </div>
                     </a>
@@ -183,7 +190,8 @@ export default function SearchResults() {
                       {result.snippet}
                     </p>
                   </article>
-                ))
+                  );
+                })
               ) : (
                 <div className="py-12 text-center text-muted-foreground">
                   <p className="text-lg">No results found for your search.</p>
