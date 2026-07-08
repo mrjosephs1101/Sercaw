@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: search
+    description: Web search and AI overview operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,31 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /search:
+    post:
+      operationId: search
+      tags: [search]
+      summary: Search the web and get a Featherpilot AI overview
+      description: Accepts a text query and/or an uploaded image, runs a live web search, and generates an AI overview from the top results.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchRequest"
+      responses:
+        "200":
+          description: Search results with AI overview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchResult"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchError"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +60,64 @@ components:
           type: string
       required:
         - status
+    SearchRequest:
+      type: object
+      properties:
+        query:
+          type: string
+          description: The text search query. May be empty if imageDataUrl is provided.
+        imageDataUrl:
+          type: ["string", "null"]
+          description: A base64 data URL (e.g. "data:image/png;base64,...") of an image to search with.
+    SearchResultItem:
+      type: object
+      required: [title, url, snippet, displayUrl]
+      properties:
+        title:
+          type: string
+        url:
+          type: string
+        snippet:
+          type: string
+        displayUrl:
+          type: string
+    AiOverviewSource:
+      type: object
+      required: [title, url]
+      properties:
+        title:
+          type: string
+        url:
+          type: string
+    AiOverview:
+      type: object
+      required: [summary, model, sources]
+      properties:
+        summary:
+          type: string
+        model:
+          type: string
+        sources:
+          type: array
+          items:
+            $ref: "#/components/schemas/AiOverviewSource"
+    SearchResult:
+      type: object
+      required: [query, results, overview]
+      properties:
+        query:
+          type: string
+          description: The resolved query actually used for the search (may differ from input if derived from an image).
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/SearchResultItem"
+        overview:
+          $ref: "#/components/schemas/AiOverview"
+    SearchError:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
 
