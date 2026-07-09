@@ -7,12 +7,19 @@ import logoUrl from '@assets/Sercaw_Logo_1783522244797.svg';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AlertCircle, ExternalLink, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { AccountMenu } from '@/components/AccountMenu';
+import { useSettings } from '@/lib/settings';
 
 export default function SearchResults() {
   const [location] = useLocation();
   const searchParams = new URLSearchParams(window.location.search);
   const q = searchParams.get('q') || '';
   
+  const { settings } = useSettings();
+  const linkTargetProps = settings.openResultsInNewTab
+    ? { target: '_blank', rel: 'noopener noreferrer' }
+    : {};
+
   const searchMutation = useSearch();
   const mutateRef = useRef(searchMutation.mutate);
   mutateRef.current = searchMutation.mutate;
@@ -53,14 +60,19 @@ export default function SearchResults() {
       {/* Header / Pinned Search */}
       <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border pt-4 pb-4 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row gap-4 sm:items-center">
-          <Link href="/" className="flex-shrink-0 mr-4 mt-1 sm:mt-0 cursor-pointer">
-            <img src={logoUrl} alt="Sercaw" className="h-8 sm:h-10 w-auto" />
-          </Link>
+          <div className="flex items-center justify-between sm:contents">
+            <Link href="/" className="flex-shrink-0 mr-4 mt-1 sm:mt-0 cursor-pointer">
+              <img src={logoUrl} alt="Sercaw" className="h-8 sm:h-10 w-auto" />
+            </Link>
+            <div className="sm:hidden flex-shrink-0">
+              <AccountMenu />
+            </div>
+          </div>
           <div className="flex-1 w-full max-w-3xl">
             <SearchBox initialQuery={displayQuery} />
           </div>
-          <div className="hidden sm:flex w-8 h-8 rounded-full bg-sunset-gradient text-white items-center justify-center font-bold flex-shrink-0 ml-auto">
-            S
+          <div className="hidden sm:flex flex-shrink-0 ml-auto">
+            <AccountMenu />
           </div>
         </div>
       </header>
@@ -136,8 +148,7 @@ export default function SearchResults() {
                         <a 
                           key={i} 
                           href={src.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          {...linkTargetProps}
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-secondary hover:bg-secondary/80 text-xs font-medium text-foreground transition-colors"
                         >
                           {src.title}
@@ -170,7 +181,7 @@ export default function SearchResults() {
                   }
                   return (
                   <article key={idx} className="group flex flex-col gap-1 max-w-3xl">
-                    <a href={result.url} className="flex items-center gap-2 text-sm text-foreground mb-1">
+                    <a href={result.url} {...linkTargetProps} className="flex items-center gap-2 text-sm text-foreground mb-1">
                       <div className="w-6 h-6 bg-secondary rounded-full flex items-center justify-center flex-shrink-0 border border-border">
                         <span className="text-[10px] font-bold opacity-60">
                           {(hostname.charAt(0) || '?').toUpperCase()}
@@ -181,7 +192,7 @@ export default function SearchResults() {
                         <span className="text-xs text-muted-foreground truncate">{result.displayUrl}</span>
                       </div>
                     </a>
-                    <a href={result.url} className="block group-hover:underline decoration-primary/50 underline-offset-2">
+                    <a href={result.url} {...linkTargetProps} className="block group-hover:underline decoration-primary/50 underline-offset-2">
                       <h3 className="text-xl font-display font-medium text-primary line-clamp-2">
                         {result.title}
                       </h3>

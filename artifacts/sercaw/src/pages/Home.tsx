@@ -1,5 +1,7 @@
 import { Link } from 'wouter';
 import { SearchBox } from '@/components/SearchBox';
+import { AccountMenu } from '@/components/AccountMenu';
+import { SiteFooter } from '@/components/SiteFooter';
 import logoUrl from '@assets/Sercaw_Logo_1783522244797.svg';
 import iconUrl from '@assets/Sercaw_Icon_1783522244776.svg';
 
@@ -8,11 +10,9 @@ export default function Home() {
     <div className="min-h-[100dvh] flex flex-col bg-background">
       {/* Top Nav (minimal) */}
       <header className="flex justify-end items-center p-4 sm:p-6 gap-4 text-sm font-medium">
-        <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">About</a>
-        <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">Featherpilot</a>
-        <div className="w-8 h-8 rounded-full bg-sunset-gradient text-white flex items-center justify-center font-bold">
-          S
-        </div>
+        <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">About</Link>
+        <Link href="/featherpilot" className="text-muted-foreground hover:text-foreground transition-colors">Featherpilot</Link>
+        <AccountMenu />
       </header>
 
       {/* Main Content */}
@@ -50,16 +50,7 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="py-4 px-6 border-t border-border bg-card/50 text-xs text-muted-foreground flex justify-between items-center">
-        <div className="flex gap-4">
-          <a href="#" className="hover:text-foreground">Privacy</a>
-          <a href="#" className="hover:text-foreground">Terms</a>
-        </div>
-        <div className="flex gap-4">
-          <a href="#" className="hover:text-foreground">Settings</a>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

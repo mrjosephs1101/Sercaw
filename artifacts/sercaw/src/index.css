@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@layer theme, base, clerk, components, utilities;
 @import 'tailwindcss';
+@import '@clerk/themes/shadcn.css';
 @import 'tw-animate-css';
 @plugin "@tailwindcss/typography";
 
@@ -158,4 +160,45 @@
 @keyframes flight {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
   50% { transform: translateY(-4px) rotate(2deg); }
+}
+
+/* Accessibility: reduce motion — disable animations/transitions app-wide. */
+html.reduce-motion,
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Accessibility: underline links so they don't rely on color alone. */
+html.underline-links a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+/* Accessibility: high contrast — stronger borders, text, and focus rings. */
+html.high-contrast {
+  --border: 20 15% 15%;
+  --muted-foreground: 20 15% 10%;
+  --card-border: 20 15% 15%;
+}
+html.high-contrast.dark {
+  --border: 30 20% 85%;
+  --muted-foreground: 30 20% 90%;
+  --card-border: 30 20% 85%;
+}
+html.high-contrast * {
+  border-color: hsl(var(--border)) !important;
+}
+html.high-contrast :focus-visible {
+  outline: 3px solid hsl(var(--primary)) !important;
+  outline-offset: 2px !important;
+}
+html.high-contrast .text-muted-foreground {
+  color: hsl(var(--foreground)) !important;
+  opacity: 0.85;
 }
