@@ -1,0 +1,126 @@
+2026-07-25T17:14:55.966Z	Initializing build environment...
+2026-07-25T17:15:00.908Z	Success: Finished initializing build environment
+2026-07-25T17:14:55.966Z	Initializing build environment...
+2026-07-25T17:15:00.908Z	Success: Finished initializing build environment
+2026-07-25T17:15:02.608Z	Cloning repository...
+2026-07-25T17:15:03.970Z	Restoring from dependencies cache
+2026-07-25T17:15:03.972Z	Restoring from build output cache
+2026-07-25T17:15:05.795Z	Detected the following tools from environment: pnpm@10.26.1, nodejs@22.16.0
+2026-07-25T17:15:07.189Z	Installing project dependencies: pnpm install --frozen-lockfile
+2026-07-25T17:15:07.784Z	Scope: all 9 workspace projects
+2026-07-25T17:15:07.885Z	Lockfile is up to date, resolution step is skipped
+2026-07-25T17:15:07.948Z	Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-07-25T17:15:07.998Z	Packages: +514
+2026-07-25T17:15:07.999Z	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-07-25T17:15:08.954Z	Progress: resolved 514, reused 0, downloaded 62, added 16
+2026-07-25T17:15:09.952Z	Progress: resolved 514, reused 0, downloaded 131, added 38
+2026-07-25T17:15:10.952Z	Progress: resolved 514, reused 0, downloaded 273, added 104
+2026-07-25T17:15:11.952Z	Progress: resolved 514, reused 0, downloaded 326, added 126
+2026-07-25T17:15:12.953Z	Progress: resolved 514, reused 0, downloaded 339, added 130
+2026-07-25T17:15:13.955Z	Progress: resolved 514, reused 0, downloaded 341, added 130
+2026-07-25T17:15:14.955Z	Progress: resolved 514, reused 0, downloaded 402, added 153
+2026-07-25T17:15:15.966Z	Progress: resolved 514, reused 0, downloaded 422, added 157
+2026-07-25T17:15:16.967Z	Progress: resolved 514, reused 0, downloaded 514, added 332
+2026-07-25T17:15:17.591Z	Progress: resolved 514, reused 0, downloaded 514, added 514, done
+2026-07-25T17:15:17.791Z	.../esbuild@0.27.3/node_modules/esbuild postinstall$ node install.js
+2026-07-25T17:15:17.906Z	.../esbuild@0.27.3/node_modules/esbuild postinstall: Done
+2026-07-25T17:15:18.224Z	
+2026-07-25T17:15:18.225Z	dependencies:
+2026-07-25T17:15:18.225Z	+ @replit/connectors-sdk 0.4.1
+2026-07-25T17:15:18.225Z	
+2026-07-25T17:15:18.225Z	devDependencies:
+2026-07-25T17:15:18.225Z	+ prettier 3.9.4
+2026-07-25T17:15:18.225Z	+ typescript 5.9.3
+2026-07-25T17:15:18.225Z	
+2026-07-25T17:15:18.282Z	. preinstall$ sh -c 'rm -f package-lock.json yarn.lock; case "$npm_config_user_agent" in pnpm/*) ;; *) echo "Use pnpm instead" >&2; exit 1 ;; esac'
+2026-07-25T17:15:18.292Z	. preinstall: Done
+2026-07-25T17:15:18.415Z	╭ Warning ─────────────────────────────────────────────────────────────────────╮
+2026-07-25T17:15:18.415Z	│                                                                              │
+2026-07-25T17:15:18.415Z	│   Ignored build scripts: @clerk/shared@3.47.7.                               │
+2026-07-25T17:15:18.415Z	│   Run "pnpm approve-builds" to pick which dependencies should be allowed     │
+2026-07-25T17:15:18.415Z	│   to run scripts.                                                            │
+2026-07-25T17:15:18.415Z	│                                                                              │
+2026-07-25T17:15:18.415Z	╰──────────────────────────────────────────────────────────────────────────────╯
+2026-07-25T17:15:18.431Z	Done in 11s using pnpm v10.26.1
+2026-07-25T17:15:18.592Z	Executing user build command: pnpm run build
+2026-07-25T17:15:18.978Z	
+2026-07-25T17:15:18.979Z	> workspace@0.0.0 build /opt/buildhome/repo
+2026-07-25T17:15:18.979Z	> pnpm run typecheck && pnpm -r --if-present run build
+2026-07-25T17:15:18.979Z	
+2026-07-25T17:15:19.358Z	
+2026-07-25T17:15:19.358Z	> workspace@0.0.0 typecheck /opt/buildhome/repo
+2026-07-25T17:15:19.358Z	> pnpm run typecheck:libs && pnpm -r --filter "./artifacts/**" --filter "./scripts" --if-present run typecheck
+2026-07-25T17:15:19.358Z	
+2026-07-25T17:15:19.719Z	
+2026-07-25T17:15:19.720Z	> workspace@0.0.0 typecheck:libs /opt/buildhome/repo
+2026-07-25T17:15:19.720Z	> tsc --build
+2026-07-25T17:15:19.720Z	
+2026-07-25T17:15:24.026Z	Scope: 4 of 9 workspace projects
+2026-07-25T17:15:24.035Z	artifacts/mockup-sandbox typecheck$ tsc -p tsconfig.json --noEmit
+2026-07-25T17:15:24.036Z	artifacts/api-server typecheck$ tsc -p tsconfig.json --noEmit
+2026-07-25T17:15:29.724Z	artifacts/api-server typecheck: Done
+2026-07-25T17:15:29.730Z	artifacts/sercaw typecheck$ tsc -p tsconfig.json --noEmit
+2026-07-25T17:15:35.585Z	artifacts/mockup-sandbox typecheck: Done
+2026-07-25T17:15:35.586Z	scripts typecheck$ tsc -p tsconfig.json --noEmit
+2026-07-25T17:15:37.405Z	scripts typecheck: Done
+2026-07-25T17:15:40.223Z	artifacts/sercaw typecheck: Done
+2026-07-25T17:15:40.653Z	Scope: 8 of 9 workspace projects
+2026-07-25T17:15:40.661Z	artifacts/mockup-sandbox build$ vite build
+2026-07-25T17:15:41.113Z	artifacts/mockup-sandbox build: vite v7.3.6 building client environment for production...
+2026-07-25T17:15:41.219Z	artifacts/mockup-sandbox build: transforming...
+2026-07-25T17:15:42.523Z	artifacts/mockup-sandbox build: ✓ 30 modules transformed.
+2026-07-25T17:15:42.696Z	artifacts/mockup-sandbox build: rendering chunks...
+2026-07-25T17:15:42.708Z	artifacts/mockup-sandbox build: computing gzip size...
+2026-07-25T17:15:42.718Z	artifacts/mockup-sandbox build: dist/index.html                   4.45 kB │ gzip:  1.24 kB
+2026-07-25T17:15:42.719Z	artifacts/mockup-sandbox build: dist/assets/index-D3zZPnxY.css   88.21 kB │ gzip: 14.76 kB
+2026-07-25T17:15:42.722Z	artifacts/mockup-sandbox build: dist/assets/index-BuZVkbMM.js   187.73 kB │ gzip: 59.52 kB
+2026-07-25T17:15:42.722Z	artifacts/mockup-sandbox build: ✓ built in 1.56s
+2026-07-25T17:15:42.759Z	artifacts/mockup-sandbox build: Done
+2026-07-25T17:15:42.761Z	artifacts/api-server build$ node ./build.mjs
+2026-07-25T17:15:42.762Z	artifacts/sercaw build$ vite build --config vite.config.ts
+2026-07-25T17:15:43.207Z	artifacts/sercaw build: vite v7.3.6 building client environment for production...
+2026-07-25T17:15:43.297Z	artifacts/sercaw build: transforming...
+2026-07-25T17:15:44.231Z	artifacts/api-server build:   dist/index.mjs                       3.4mb ⚠️
+2026-07-25T17:15:44.232Z	artifacts/api-server build:   dist/pino-worker.mjs               153.4kb
+2026-07-25T17:15:44.232Z	artifacts/api-server build:   dist/pino-file.mjs                 142.1kb
+2026-07-25T17:15:44.233Z	artifacts/api-server build:   dist/pino-pretty.mjs               114.6kb
+2026-07-25T17:15:44.233Z	artifacts/api-server build:   dist/thread-stream-worker.mjs        7.3kb
+2026-07-25T17:15:44.233Z	artifacts/api-server build:   dist/index.mjs.map                   7.1mb
+2026-07-25T17:15:44.233Z	artifacts/api-server build:   dist/pino-worker.mjs.map           256.9kb
+2026-07-25T17:15:44.233Z	artifacts/api-server build:   dist/pino-file.mjs.map             229.0kb
+2026-07-25T17:15:44.233Z	artifacts/api-server build:   dist/pino-pretty.mjs.map           204.0kb
+2026-07-25T17:15:44.233Z	artifacts/api-server build:   dist/thread-stream-worker.mjs.map   12.0kb
+2026-07-25T17:15:44.233Z	artifacts/api-server build: ⚡ Done in 1320ms
+2026-07-25T17:15:44.302Z	artifacts/api-server build: Done
+2026-07-25T17:15:44.330Z	artifacts/sercaw build: src/components/ui/tooltip.tsx (2:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.
+2026-07-25T17:15:46.111Z	artifacts/sercaw build: src/components/ui/label.tsx (2:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.
+2026-07-25T17:15:46.112Z	artifacts/sercaw build: src/components/ui/select.tsx (2:0): Error when using sourcemap for reporting an error: Can't resolve original location of error.
+2026-07-25T17:15:48.287Z	artifacts/sercaw build: ✓ 1897 modules transformed.
+2026-07-25T17:15:48.726Z	artifacts/sercaw build: rendering chunks...
+2026-07-25T17:15:48.739Z	artifacts/sercaw build: computing gzip size...
+2026-07-25T17:15:48.758Z	artifacts/sercaw build: dist/public/index.html                                       1.37 kB │ gzip:   0.54 kB
+2026-07-25T17:15:48.762Z	artifacts/sercaw build: dist/public/assets/Sercaw_Logo_1783522244797-DvK2r67n.svg   11.93 kB │ gzip:   4.61 kB
+2026-07-25T17:15:48.763Z	artifacts/sercaw build: dist/public/assets/Sercaw_Icon_1783522244776-DBZY8j2Y.svg   15.59 kB │ gzip:   6.60 kB
+2026-07-25T17:15:48.763Z	artifacts/sercaw build: dist/public/assets/index-D0RQnsCu.css                      136.93 kB │ gzip:  20.72 kB
+2026-07-25T17:15:48.763Z	artifacts/sercaw build: dist/public/assets/index-BjFer4Db.js                       511.07 kB │ gzip: 156.98 kB
+2026-07-25T17:15:48.764Z	artifacts/sercaw build: 
+2026-07-25T17:15:48.764Z	artifacts/sercaw build: (!) Some chunks are larger than 500 kB after minification. Consider:
+2026-07-25T17:15:48.764Z	artifacts/sercaw build: - Using dynamic import() to code-split the application
+2026-07-25T17:15:48.765Z	artifacts/sercaw build: - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+2026-07-25T17:15:48.765Z	artifacts/sercaw build: - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+2026-07-25T17:15:48.770Z	artifacts/sercaw build: ✓ built in 5.51s
+2026-07-25T17:15:48.840Z	artifacts/sercaw build: Done
+2026-07-25T17:15:48.870Z	Success: Build command completed
+2026-07-25T17:15:49.002Z	Executing user deploy command: npx wrangler deploy
+2026-07-25T17:15:50.618Z	npm warn exec The following package was not found and will be installed: wrangler@4.114.0
+2026-07-25T17:15:58.965Z	
+2026-07-25T17:15:58.966Z	 ⛅️ wrangler 4.114.0
+2026-07-25T17:15:58.966Z	────────────────────
+2026-07-25T17:15:59.607Z	
+2026-07-25T17:15:59.607Z	Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
+2026-07-25T17:15:59.608Z	
+2026-07-25T17:15:59.667Z	✘ [ERROR] The Cloudflare application detection logic has been run in the root of a workspace instead of targeting a specific project. Change your working directory to one of the applications in the workspace and try again.
+2026-07-25T17:15:59.668Z	
+2026-07-25T17:15:59.668Z	
+2026-07-25T17:15:59.704Z	🪵  Logs were written to "/opt/buildhome/.config/.wrangler/logs/wrangler-2026-07-25_17-15-58_536.log"
+2026-07-25T17:15:59.789Z	Failed: error occurred while running deploy command
