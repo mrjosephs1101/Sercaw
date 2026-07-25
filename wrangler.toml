@@ -1,0 +1,7 @@
+name = "sercaw"
+compatibility_date = "2026-07-25"
+
+# Deploys the Sercaw frontend as a Cloudflare Pages static site.
+# The API server (Express + Postgres + SSE) cannot run on Cloudflare Workers
+# and must be hosted separately (e.g. Replit autoscale).
+pages_build_output_dir = "artifacts/sercaw/dist/public"
