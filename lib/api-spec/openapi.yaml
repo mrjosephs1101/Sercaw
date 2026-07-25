@@ -69,6 +69,10 @@ components:
         imageDataUrl:
           type: ["string", "null"]
           description: A base64 data URL (e.g. "data:image/png;base64,...") of an image to search with.
+        page:
+          type: integer
+          description: Page of results to fetch (1-indexed). Defaults to 1.
+          minimum: 1
     SearchResultItem:
       type: object
       required: [title, url, snippet, displayUrl]

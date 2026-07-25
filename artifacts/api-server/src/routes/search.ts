@@ -16,7 +16,7 @@ router.post("/search", async (req, res): Promise<void> => {
     return;
   }
 
-  const { query, imageDataUrl } = parsed.data;
+  const { query, imageDataUrl, page } = parsed.data;
   const typedQuery = (query ?? "").trim();
 
   if (!typedQuery && !imageDataUrl) {
@@ -45,7 +45,7 @@ router.post("/search", async (req, res): Promise<void> => {
 
   let results: WebSearchResult[] = [];
   try {
-    results = await searchTheWeb(resolvedQuery);
+    results = await searchTheWeb(resolvedQuery, 10, page ?? 1);
   } catch (err) {
     req.log.error({ err }, "Web search failed");
     res.status(502).json({ error: "The web search is temporarily unavailable. Please try again." });

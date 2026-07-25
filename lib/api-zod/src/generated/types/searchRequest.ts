@@ -14,4 +14,9 @@ export interface SearchRequest {
      * @nullable
      */
   imageDataUrl?: string | null;
+  /**
+     * Page of results to fetch (1-indexed). Defaults to 1.
+     * @minimum 1
+     */
+  page?: number;
 }

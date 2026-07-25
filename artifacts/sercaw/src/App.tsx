@@ -8,6 +8,8 @@ import { ClerkProvider, SignIn, SignUp, useClerk } from '@clerk/react';
 import { publishableKeyFromHost } from '@clerk/react/internal';
 import { shadcn } from '@clerk/themes';
 import { SettingsProvider } from '@/lib/settings';
+import { FeatherpilotChatProvider } from '@/components/featherpilot/FeatherpilotChatContext';
+import { FeatherpilotChatPanel } from '@/components/featherpilot/FeatherpilotChatPanel';
 
 // Pages
 import Home from '@/pages/Home';
@@ -172,6 +174,7 @@ function ClerkProviderWithRoutes() {
       <QueryClientProvider client={queryClient}>
         <ClerkQueryClientCacheInvalidator />
         <SettingsProvider>
+        <FeatherpilotChatProvider>
         <TooltipProvider>
           <Switch>
             <Route path="/" component={Home} />
@@ -186,8 +189,10 @@ function ClerkProviderWithRoutes() {
             <Route path="/sign-up/*?" component={SignUpPage} />
             <Route component={NotFound} />
           </Switch>
+          <FeatherpilotChatPanel />
           <Toaster />
         </TooltipProvider>
+        </FeatherpilotChatProvider>
         </SettingsProvider>
       </QueryClientProvider>
     </ClerkProvider>

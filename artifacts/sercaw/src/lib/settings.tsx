@@ -2,6 +2,8 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 
 export type Theme = 'light' | 'dark' | 'system';
 export type FontSize = 'sm' | 'md' | 'lg' | 'xl';
+export type SnippetLength = 'short' | 'medium' | 'full';
+export type AccentColor = 'sunset' | 'ocean' | 'forest' | 'aurora';
 
 export interface SercawSettings {
   theme: Theme;
@@ -10,6 +12,11 @@ export interface SercawSettings {
   highContrast: boolean;
   underlineLinks: boolean;
   openResultsInNewTab: boolean;
+  showAiOverview: boolean;
+  compactResults: boolean;
+  snippetLength: SnippetLength;
+  accentColor: AccentColor;
+  stickyHeader: boolean;
 }
 
 const DEFAULT_SETTINGS: SercawSettings = {
@@ -19,12 +26,19 @@ const DEFAULT_SETTINGS: SercawSettings = {
   highContrast: false,
   underlineLinks: false,
   openResultsInNewTab: false,
+  showAiOverview: true,
+  compactResults: false,
+  snippetLength: 'medium',
+  accentColor: 'sunset',
+  stickyHeader: true,
 };
 
 const STORAGE_KEY = 'sercaw:settings';
 
 const THEMES: Theme[] = ['light', 'dark', 'system'];
 const FONT_SIZES: FontSize[] = ['sm', 'md', 'lg', 'xl'];
+const SNIPPET_LENGTHS: SnippetLength[] = ['short', 'medium', 'full'];
+const ACCENT_COLORS: AccentColor[] = ['sunset', 'ocean', 'forest', 'aurora'];
 
 function sanitize(parsed: unknown): SercawSettings {
   const p = (parsed && typeof parsed === 'object' ? parsed : {}) as Partial<SercawSettings>;
@@ -41,6 +55,18 @@ function sanitize(parsed: unknown): SercawSettings {
       typeof p.openResultsInNewTab === 'boolean'
         ? p.openResultsInNewTab
         : DEFAULT_SETTINGS.openResultsInNewTab,
+    showAiOverview:
+      typeof p.showAiOverview === 'boolean' ? p.showAiOverview : DEFAULT_SETTINGS.showAiOverview,
+    compactResults:
+      typeof p.compactResults === 'boolean' ? p.compactResults : DEFAULT_SETTINGS.compactResults,
+    snippetLength: SNIPPET_LENGTHS.includes(p.snippetLength as SnippetLength)
+      ? (p.snippetLength as SnippetLength)
+      : DEFAULT_SETTINGS.snippetLength,
+    accentColor: ACCENT_COLORS.includes(p.accentColor as AccentColor)
+      ? (p.accentColor as AccentColor)
+      : DEFAULT_SETTINGS.accentColor,
+    stickyHeader:
+      typeof p.stickyHeader === 'boolean' ? p.stickyHeader : DEFAULT_SETTINGS.stickyHeader,
   };
 }
 
@@ -68,6 +94,13 @@ const FONT_SIZE_PX: Record<FontSize, string> = {
   md: '16px',
   lg: '18px',
   xl: '20px',
+};
+
+const ACCENT_CLASSES: Record<AccentColor, string> = {
+  sunset: '',
+  ocean: 'accent-ocean',
+  forest: 'accent-forest',
+  aurora: 'accent-aurora',
 };
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
@@ -107,6 +140,16 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     root.classList.toggle('high-contrast', settings.highContrast);
     root.classList.toggle('underline-links', settings.underlineLinks);
   }, [settings.fontSize, settings.reduceMotion, settings.highContrast, settings.underlineLinks]);
+
+  // Apply accent color as a root class.
+  useEffect(() => {
+    const root = document.documentElement;
+    Object.values(ACCENT_CLASSES).forEach((cls) => {
+      if (cls) root.classList.remove(cls);
+    });
+    const cls = ACCENT_CLASSES[settings.accentColor];
+    if (cls) root.classList.add(cls);
+  }, [settings.accentColor]);
 
   const value = useMemo<SettingsContextValue>(
     () => ({

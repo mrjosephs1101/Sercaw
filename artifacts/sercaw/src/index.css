@@ -202,3 +202,61 @@ html.high-contrast .text-muted-foreground {
   color: hsl(var(--foreground)) !important;
   opacity: 0.85;
 }
+
+/* ── Accent color presets ───────────────────────────────────────────────── */
+/* Sunset is the default; no class needed. Each preset overrides --primary,  */
+/* --ring, --accent, and the gradient colors used by .bg-sunset-gradient.    */
+
+html.accent-ocean {
+  --primary: 204 90% 48%;
+  --ring: 204 90% 48%;
+  --accent: 204 90% 48%;
+}
+html.accent-ocean .bg-sunset-gradient,
+html.accent-ocean .bg-sunset-gradient {
+  background: linear-gradient(135deg, hsl(199 90% 48%), hsl(186 85% 44%), hsl(220 80% 58%));
+}
+html.accent-ocean .text-sunset-gradient {
+  background: linear-gradient(135deg, hsl(199 90% 48%), hsl(186 85% 44%), hsl(220 80% 58%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html.accent-forest {
+  --primary: 142 60% 38%;
+  --ring: 142 60% 38%;
+  --accent: 142 60% 38%;
+}
+html.accent-forest .bg-sunset-gradient {
+  background: linear-gradient(135deg, hsl(142 60% 38%), hsl(165 65% 42%), hsl(100 50% 40%));
+}
+html.accent-forest .text-sunset-gradient {
+  background: linear-gradient(135deg, hsl(142 60% 38%), hsl(165 65% 42%), hsl(100 50% 40%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html.accent-aurora {
+  --primary: 272 75% 58%;
+  --ring: 272 75% 58%;
+  --accent: 272 75% 58%;
+}
+html.accent-aurora .bg-sunset-gradient {
+  background: linear-gradient(135deg, hsl(272 75% 58%), hsl(320 80% 58%), hsl(195 85% 52%));
+}
+html.accent-aurora .text-sunset-gradient {
+  background: linear-gradient(135deg, hsl(272 75% 58%), hsl(320 80% 58%), hsl(195 85% 52%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Compact results ────────────────────────────────────────────────────── */
+html.compact-results .search-result-article {
+  gap: 0.25rem;
+}
+html.compact-results .search-result-title {
+  font-size: 1.05rem;
+}
+html.compact-results .search-result-gap {
+  gap: 1.25rem;
+}

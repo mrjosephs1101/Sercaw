@@ -21,9 +21,13 @@ export const HealthCheckResponse = zod.object({
  * Accepts a text query and/or an uploaded image, runs a live web search, and generates an AI overview from the top results.
  * @summary Search the web and get a Featherpilot AI overview
  */
+
+
+
 export const SearchBody = zod.object({
   "query": zod.string().optional().describe('The text search query. May be empty if imageDataUrl is provided.'),
-  "imageDataUrl": zod.string().nullish().describe('A base64 data URL (e.g. \"data:image\/png;base64,...\") of an image to search with.')
+  "imageDataUrl": zod.string().nullish().describe('A base64 data URL (e.g. \"data:image\/png;base64,...\") of an image to search with.'),
+  "page": zod.number().min(1).optional().describe('Page of results to fetch (1-indexed). Defaults to 1.')
 })
 
 export const SearchResponse = zod.object({

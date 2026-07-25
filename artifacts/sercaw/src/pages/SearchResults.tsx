@@ -5,10 +5,17 @@ import { useSearch } from '@workspace/api-client-react';
 import iconUrl from '@assets/Sercaw_Icon_1783522244776.svg';
 import logoUrl from '@assets/Sercaw_Logo_1783522244797.svg';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AlertCircle, ExternalLink, Sparkles } from 'lucide-react';
+import { AlertCircle, ChevronLeft, ChevronRight, ExternalLink, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AccountMenu } from '@/components/AccountMenu';
 import { useSettings } from '@/lib/settings';
+import { useFeatherpilotChatUi } from '@/components/featherpilot/FeatherpilotChatContext';
+
+const SNIPPET_CLAMP: Record<string, string> = {
+  short: 'line-clamp-2',
+  medium: 'line-clamp-4',
+  full: '',
+};
 
 export default function SearchResults() {
   const [location] = useLocation();
@@ -16,6 +23,7 @@ export default function SearchResults() {
   const q = searchParams.get('q') || '';
   
   const { settings } = useSettings();
+  const { open: openChat } = useFeatherpilotChatUi();
   const linkTargetProps = settings.openResultsInNewTab
     ? { target: '_blank', rel: 'noopener noreferrer' }
     : {};
@@ -24,54 +32,81 @@ export default function SearchResults() {
   const mutateRef = useRef(searchMutation.mutate);
   mutateRef.current = searchMutation.mutate;
 
-  // We want to track the current active query independently so the input can change
-  // without immediately losing the current view state
   const [activeQuery, setActiveQuery] = useState(q);
+  const [page, setPage] = useState(1);
+  // Track which page number we last initiated a search for, to avoid double-firing.
+  const searchedPageRef = useRef<number | null>(null);
 
+  // Primary effect: fires when the URL query changes → always resets to page 1.
   useEffect(() => {
-    // On mount or when URL `q` changes, trigger search
     const image = sessionStorage.getItem('sercaw_pending_image');
-    
-    // If we have neither query nor image, don't search
     if (!q && !image) return;
 
     setActiveQuery(q);
+    setPage(1);
+    searchedPageRef.current = 1;
+    mutateRef.current({ data: { query: q, imageDataUrl: image || null, page: 1 } });
+  }, [q, location]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    mutateRef.current({
-      data: {
-        query: q,
-        imageDataUrl: image || null
-      }
-    });
-
-    // We do NOT clear the sessionStorage here because if the user refreshes,
-    // they'd lose the image context. We only clear it when they manually remove it.
-  }, [q, location]); // Re-run if location (and thus q) changes
+  // Pagination handler — called directly by prev/next buttons.
+  function goToPage(newPage: number) {
+    const image = sessionStorage.getItem('sercaw_pending_image');
+    setPage(newPage);
+    searchedPageRef.current = newPage;
+    mutateRef.current({ data: { query: q, imageDataUrl: image || null, page: newPage } });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   const isLoading = searchMutation.isPending;
   const isError = searchMutation.isError;
   const data = searchMutation.data;
 
-  // The actual resolved query from the server might be different if they used an image
   const displayQuery = data?.query || activeQuery;
+
+  const snippetClass = SNIPPET_CLAMP[settings.snippetLength] ?? 'line-clamp-4';
+  const resultGapClass = settings.compactResults ? 'space-y-4' : 'space-y-8';
+  const headerClass = settings.stickyHeader
+    ? 'sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border pt-4 pb-4 px-4 sm:px-6'
+    : 'bg-background border-b border-border pt-4 pb-4 px-4 sm:px-6';
+
+  // Infer whether there's a next page: if results came back at 10, assume more exist.
+  const hasNextPage = !isLoading && data?.results && data.results.length >= 10;
+  const hasPrevPage = page > 1;
 
   return (
     <div className="min-h-[100dvh] flex flex-col bg-background">
       {/* Header / Pinned Search */}
-      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border pt-4 pb-4 px-4 sm:px-6">
+      <header className={headerClass}>
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row gap-4 sm:items-center">
           <div className="flex items-center justify-between sm:contents">
             <Link href="/" className="flex-shrink-0 mr-4 mt-1 sm:mt-0 cursor-pointer">
               <img src={logoUrl} alt="Sercaw" className="h-8 sm:h-10 w-auto" />
             </Link>
-            <div className="sm:hidden flex-shrink-0">
+            <div className="sm:hidden flex-shrink-0 flex items-center gap-2">
+              <button
+                type="button"
+                onClick={openChat}
+                title="Chat with Featherpilot"
+                className="p-1.5 rounded-full hover:bg-muted transition-colors"
+              >
+                <img src={iconUrl} alt="Featherpilot" className="w-6 h-6" />
+              </button>
               <AccountMenu />
             </div>
           </div>
           <div className="flex-1 w-full max-w-3xl">
             <SearchBox initialQuery={displayQuery} />
           </div>
-          <div className="hidden sm:flex flex-shrink-0 ml-auto">
+          <div className="hidden sm:flex flex-shrink-0 ml-auto items-center gap-3">
+            <button
+              type="button"
+              onClick={openChat}
+              className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              title="Chat with Featherpilot"
+            >
+              <img src={iconUrl} alt="" className="w-5 h-5" />
+              <span>Featherpilot</span>
+            </button>
             <AccountMenu />
           </div>
         </div>
@@ -97,7 +132,7 @@ export default function SearchResults() {
             </div>
 
             {/* Skeleton for organic results */}
-            <div className="space-y-8 mt-8">
+            <div className={cn('mt-8', resultGapClass)}>
               {[1, 2, 3].map(i => (
                 <div key={i} className="space-y-2">
                   <div className="flex items-center gap-2">
@@ -128,7 +163,7 @@ export default function SearchResults() {
         {!isLoading && !isError && data && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 fill-mode-both">
             {/* Featherpilot AI Overview */}
-            {data.overview && (
+            {data.overview && settings.showAiOverview && (
               <section className="rounded-2xl border border-orange-200/50 dark:border-orange-900/30 bg-card p-5 sm:p-6 mb-8 shadow-sm">
                 <div className="flex items-center gap-2 mb-4">
                   <img src={iconUrl} alt="Featherpilot" className="w-6 h-6" />
@@ -170,7 +205,7 @@ export default function SearchResults() {
             )}
 
             {/* Organic Results */}
-            <div className="space-y-8">
+            <div className={cn(resultGapClass, 'search-result-gap')}>
               {data.results && data.results.length > 0 ? (
                 data.results.map((result, idx) => {
                   let hostname = result.displayUrl;
@@ -180,7 +215,13 @@ export default function SearchResults() {
                     // Fall back to the server-provided displayUrl if the URL is malformed.
                   }
                   return (
-                  <article key={idx} className="group flex flex-col gap-1 max-w-3xl">
+                  <article
+                    key={idx}
+                    className={cn(
+                      'search-result-article group flex flex-col max-w-3xl',
+                      settings.compactResults ? 'gap-0.5' : 'gap-1',
+                    )}
+                  >
                     <a href={result.url} {...linkTargetProps} className="flex items-center gap-2 text-sm text-foreground mb-1">
                       <div className="w-6 h-6 bg-secondary rounded-full flex items-center justify-center flex-shrink-0 border border-border">
                         <span className="text-[10px] font-bold opacity-60">
@@ -193,11 +234,16 @@ export default function SearchResults() {
                       </div>
                     </a>
                     <a href={result.url} {...linkTargetProps} className="block group-hover:underline decoration-primary/50 underline-offset-2">
-                      <h3 className="text-xl font-display font-medium text-primary line-clamp-2">
+                      <h3
+                        className={cn(
+                          'search-result-title font-display font-medium text-primary line-clamp-2',
+                          settings.compactResults ? 'text-lg' : 'text-xl',
+                        )}
+                      >
                         {result.title}
                       </h3>
                     </a>
-                    <p className="text-sm text-foreground/80 line-clamp-2 mt-1 leading-relaxed">
+                    <p className={cn('text-sm text-foreground/80 mt-1 leading-relaxed', snippetClass)}>
                       {result.snippet}
                     </p>
                   </article>
@@ -210,7 +256,33 @@ export default function SearchResults() {
                 </div>
               )}
             </div>
-            
+
+            {/* Pagination */}
+            {(hasPrevPage || hasNextPage) && (
+              <div className="flex items-center justify-center gap-4 mt-12 pb-4">
+                <button
+                  type="button"
+                  onClick={() => goToPage(page - 1)}
+                  disabled={!hasPrevPage}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  <ChevronLeft size={16} />
+                  Previous
+                </button>
+                <span className="text-sm font-medium text-muted-foreground px-2">
+                  Page {page}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => goToPage(page + 1)}
+                  disabled={!hasNextPage}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-border text-sm font-medium text-foreground hover:bg-muted transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  Next
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            )}
           </div>
         )}
 

@@ -29,7 +29,8 @@ interface SerperResponse {
  */
 export async function searchTheWeb(
   query: string,
-  limit = 8,
+  limit = 10,
+  page = 1,
 ): Promise<WebSearchResult[]> {
   const response = await fetch("https://google.serper.dev/search", {
     method: "POST",
@@ -37,7 +38,7 @@ export async function searchTheWeb(
       "X-API-KEY": process.env.SERPER_API_KEY!,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ q: query, num: limit }),
+    body: JSON.stringify({ q: query, num: limit, page }),
   });
 
   if (!response.ok) {

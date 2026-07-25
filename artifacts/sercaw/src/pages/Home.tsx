@@ -2,16 +2,25 @@ import { Link } from 'wouter';
 import { SearchBox } from '@/components/SearchBox';
 import { AccountMenu } from '@/components/AccountMenu';
 import { SiteFooter } from '@/components/SiteFooter';
+import { useFeatherpilotChatUi } from '@/components/featherpilot/FeatherpilotChatContext';
 import logoUrl from '@assets/Sercaw_Logo_1783522244797.svg';
 import iconUrl from '@assets/Sercaw_Icon_1783522244776.svg';
 
 export default function Home() {
+  const { open: openChat } = useFeatherpilotChatUi();
+
   return (
     <div className="min-h-[100dvh] flex flex-col bg-background">
       {/* Top Nav (minimal) */}
       <header className="flex justify-end items-center p-4 sm:p-6 gap-4 text-sm font-medium">
         <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">About</Link>
-        <Link href="/featherpilot" className="text-muted-foreground hover:text-foreground transition-colors">Featherpilot</Link>
+        <button
+          type="button"
+          onClick={openChat}
+          className="text-muted-foreground hover:text-foreground transition-colors"
+        >
+          Featherpilot
+        </button>
         <AccountMenu />
       </header>
 
@@ -39,13 +48,17 @@ export default function Home() {
           <SearchBox autoFocus className="mb-8" />
           
           {/* Tagline / AI feature promo */}
-          <div className="text-sm text-muted-foreground flex items-center gap-2 mt-4 opacity-80 hover:opacity-100 transition-opacity cursor-default">
+          <button
+            type="button"
+            onClick={openChat}
+            className="text-sm text-muted-foreground flex items-center gap-2 mt-4 opacity-80 hover:opacity-100 transition-opacity"
+          >
             <span>Powered by</span>
             <span className="font-semibold text-sunset-gradient inline-flex items-center gap-1">
               <img src={iconUrl} alt="" className="w-4 h-4" />
               Featherpilot
             </span>
-          </div>
+          </button>
 
         </div>
       </main>

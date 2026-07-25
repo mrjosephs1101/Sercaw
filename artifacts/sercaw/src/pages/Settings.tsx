@@ -2,7 +2,14 @@ import { Link } from 'wouter';
 import { Show, useClerk, useUser } from '@clerk/react';
 import { PageShell } from '@/components/PageShell';
 import { LogOut, RotateCcw } from 'lucide-react';
-import { useSettings, type FontSize, type Theme } from '@/lib/settings';
+import { cn } from '@/lib/utils';
+import {
+  useSettings,
+  type FontSize,
+  type Theme,
+  type SnippetLength,
+  type AccentColor,
+} from '@/lib/settings';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import {
@@ -60,11 +67,19 @@ function SettingRow({
   );
 }
 
+const ACCENT_OPTIONS: { value: AccentColor; label: string; from: string; to: string }[] = [
+  { value: 'sunset', label: 'Sunset', from: '#f97316', to: '#a855f7' },
+  { value: 'ocean',  label: 'Ocean',  from: '#0ea5e9', to: '#3b82f6' },
+  { value: 'forest', label: 'Forest', from: '#22c55e', to: '#14b8a6' },
+  { value: 'aurora', label: 'Aurora', from: '#a855f7', to: '#06b6d4' },
+];
+
 function AppearanceSection() {
   const { settings, setSetting } = useSettings();
 
   return (
     <SettingsCard title="Appearance" description="Choose how Sercaw looks on this device.">
+      {/* Theme */}
       <div>
         <Label className="text-foreground font-medium mb-2 block">Theme</Label>
         <RadioGroup
@@ -81,6 +96,45 @@ function AppearanceSection() {
             </div>
           ))}
         </RadioGroup>
+      </div>
+
+      {/* Accent color */}
+      <div className="border-t border-border pt-4">
+        <Label className="text-foreground font-medium mb-3 block">Accent color</Label>
+        <div className="flex items-center gap-3">
+          {ACCENT_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              type="button"
+              title={opt.label}
+              onClick={() => setSetting('accentColor', opt.value)}
+              className={cn(
+                'w-8 h-8 rounded-full transition-all',
+                settings.accentColor === opt.value
+                  ? 'ring-2 ring-offset-2 ring-foreground scale-110'
+                  : 'hover:scale-105 opacity-80 hover:opacity-100',
+              )}
+              style={{
+                background: `linear-gradient(135deg, ${opt.from}, ${opt.to})`,
+              }}
+              aria-label={opt.label}
+            />
+          ))}
+          <span className="text-sm text-muted-foreground ml-1 capitalize">
+            {settings.accentColor}
+          </span>
+        </div>
+      </div>
+
+      {/* Compact results */}
+      <div className="border-t border-border pt-4">
+        <SettingRow
+          id="compact-results"
+          label="Compact results"
+          hint="Shows search results closer together with smaller titles."
+          checked={settings.compactResults}
+          onCheckedChange={(v) => setSetting('compactResults', v)}
+        />
       </div>
     </SettingsCard>
   );
@@ -156,7 +210,7 @@ function SearchBehaviorSection() {
   const { settings, setSetting } = useSettings();
 
   return (
-    <SettingsCard title="Search behavior" description="Control how search results behave.">
+    <SettingsCard title="Search behavior" description="Control how search results look and behave.">
       <SettingRow
         id="new-tab"
         label="Open results in a new tab"
@@ -164,6 +218,50 @@ function SearchBehaviorSection() {
         checked={settings.openResultsInNewTab}
         onCheckedChange={(v) => setSetting('openResultsInNewTab', v)}
       />
+
+      <div className="border-t border-border pt-4">
+        <SettingRow
+          id="show-ai-overview"
+          label="Show AI Overview"
+          hint="Featherpilot's AI-generated summary appears above search results."
+          checked={settings.showAiOverview}
+          onCheckedChange={(v) => setSetting('showAiOverview', v)}
+        />
+      </div>
+
+      <div className="border-t border-border pt-4">
+        <SettingRow
+          id="sticky-header"
+          label="Sticky search bar"
+          hint="Keeps the search bar pinned to the top when scrolling through results."
+          checked={settings.stickyHeader}
+          onCheckedChange={(v) => setSetting('stickyHeader', v)}
+        />
+      </div>
+
+      <div className="border-t border-border pt-4">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <Label className="text-foreground font-medium">Snippet length</Label>
+            <p className="text-sm text-muted-foreground mt-0.5">
+              How many lines of each result's description to show.
+            </p>
+          </div>
+          <Select
+            value={settings.snippetLength}
+            onValueChange={(v) => setSetting('snippetLength', v as SnippetLength)}
+          >
+            <SelectTrigger className="w-36 flex-shrink-0">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="short">Short (2 lines)</SelectItem>
+              <SelectItem value="medium">Medium (4 lines)</SelectItem>
+              <SelectItem value="full">Full text</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
     </SettingsCard>
   );
 }
