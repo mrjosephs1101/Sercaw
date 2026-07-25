@@ -1,0 +1,111 @@
+2026-07-25T17:12:59.224Z	Initializing build environment...
+2026-07-25T17:13:02.079Z	Success: Finished initializing build environment
+2026-07-25T17:13:03.006Z	Cloning repository...
+2026-07-25T17:13:06.683Z	Restoring from dependencies cache
+2026-07-25T17:13:06.685Z	Restoring from build output cache
+2026-07-25T17:13:09.376Z	Detected the following tools from environment: pnpm@10.26.1, nodejs@22.16.0
+2026-07-25T17:13:11.043Z	Installing project dependencies: pnpm install --frozen-lockfile
+2026-07-25T17:13:11.700Z	Scope: all 9 workspace projects
+2026-07-25T17:13:11.850Z	Lockfile is up to date, resolution step is skipped
+2026-07-25T17:13:11.905Z	Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-07-25T17:13:11.967Z	Packages: +514
+2026-07-25T17:13:11.969Z	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-07-25T17:13:12.908Z	Progress: resolved 514, reused 0, downloaded 14, added 0
+2026-07-25T17:13:13.913Z	Progress: resolved 514, reused 0, downloaded 107, added 34
+2026-07-25T17:12:59.224Z	Initializing build environment...
+2026-07-25T17:13:02.079Z	Success: Finished initializing build environment
+2026-07-25T17:13:03.006Z	Cloning repository...
+2026-07-25T17:13:06.683Z	Restoring from dependencies cache
+2026-07-25T17:13:06.685Z	Restoring from build output cache
+2026-07-25T17:13:09.376Z	Detected the following tools from environment: pnpm@10.26.1, nodejs@22.16.0
+2026-07-25T17:13:11.043Z	Installing project dependencies: pnpm install --frozen-lockfile
+2026-07-25T17:13:11.700Z	Scope: all 9 workspace projects
+2026-07-25T17:13:11.850Z	Lockfile is up to date, resolution step is skipped
+2026-07-25T17:13:11.905Z	Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-07-25T17:13:11.967Z	Packages: +514
+2026-07-25T17:13:11.969Z	++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-07-25T17:13:12.908Z	Progress: resolved 514, reused 0, downloaded 14, added 0
+2026-07-25T17:13:13.913Z	Progress: resolved 514, reused 0, downloaded 107, added 34
+2026-07-25T17:13:14.910Z	Progress: resolved 514, reused 0, downloaded 174, added 59
+2026-07-25T17:13:15.911Z	Progress: resolved 514, reused 0, downloaded 287, added 106
+2026-07-25T17:13:16.918Z	Progress: resolved 514, reused 0, downloaded 325, added 121
+2026-07-25T17:13:17.921Z	Progress: resolved 514, reused 0, downloaded 337, added 125
+2026-07-25T17:13:18.922Z	Progress: resolved 514, reused 0, downloaded 339, added 125
+2026-07-25T17:13:19.923Z	Progress: resolved 514, reused 0, downloaded 413, added 149
+2026-07-25T17:13:20.923Z	Progress: resolved 514, reused 0, downloaded 482, added 174
+2026-07-25T17:13:21.925Z	Progress: resolved 514, reused 0, downloaded 514, added 332
+2026-07-25T17:13:22.822Z	Progress: resolved 514, reused 0, downloaded 514, added 514, done
+2026-07-25T17:13:23.113Z	.../esbuild@0.27.3/node_modules/esbuild postinstall$ node install.js
+2026-07-25T17:13:23.185Z	.../esbuild@0.27.3/node_modules/esbuild postinstall: Done
+2026-07-25T17:13:23.702Z	
+2026-07-25T17:13:23.703Z	dependencies:
+2026-07-25T17:13:23.703Z	+ @replit/connectors-sdk 0.4.1
+2026-07-25T17:13:23.703Z	
+2026-07-25T17:13:23.704Z	devDependencies:
+2026-07-25T17:13:23.704Z	+ prettier 3.9.4
+2026-07-25T17:13:23.705Z	+ typescript 5.9.3
+2026-07-25T17:13:23.705Z	
+2026-07-25T17:13:23.795Z	. preinstall$ sh -c 'rm -f package-lock.json yarn.lock; case "$npm_config_user_agent" in pnpm/*) ;; *) echo "Use pnpm instead" >&2; exit 1 ;; esac'
+2026-07-25T17:13:23.809Z	. preinstall: Done
+2026-07-25T17:13:24.055Z	╭ Warning ─────────────────────────────────────────────────────────────────────╮
+2026-07-25T17:13:24.056Z	│                                                                              │
+2026-07-25T17:13:24.056Z	│   Ignored build scripts: @clerk/shared@3.47.7.                               │
+2026-07-25T17:13:24.056Z	│   Run "pnpm approve-builds" to pick which dependencies should be allowed     │
+2026-07-25T17:13:24.056Z	│   to run scripts.                                                            │
+2026-07-25T17:13:24.057Z	│                                                                              │
+2026-07-25T17:13:24.058Z	╰──────────────────────────────────────────────────────────────────────────────╯
+2026-07-25T17:13:24.124Z	Done in 12.9s using pnpm v10.26.1
+2026-07-25T17:13:24.416Z	Executing user build command: pnpm run build
+2026-07-25T17:13:24.884Z	
+2026-07-25T17:13:24.884Z	> workspace@0.0.0 build /opt/buildhome/repo
+2026-07-25T17:13:24.884Z	> pnpm run typecheck && pnpm -r --if-present run build
+2026-07-25T17:13:24.884Z	
+2026-07-25T17:13:25.451Z	
+2026-07-25T17:13:25.451Z	> workspace@0.0.0 typecheck /opt/buildhome/repo
+2026-07-25T17:13:25.451Z	> pnpm run typecheck:libs && pnpm -r --filter "./artifacts/**" --filter "./scripts" --if-present run typecheck
+2026-07-25T17:13:25.451Z	
+2026-07-25T17:13:26.013Z	
+2026-07-25T17:13:26.014Z	> workspace@0.0.0 typecheck:libs /opt/buildhome/repo
+2026-07-25T17:13:26.014Z	> tsc --build
+2026-07-25T17:13:26.014Z	
+2026-07-25T17:13:30.905Z	Scope: 4 of 9 workspace projects
+2026-07-25T17:13:30.912Z	artifacts/mockup-sandbox typecheck$ tsc -p tsconfig.json --noEmit
+2026-07-25T17:13:30.915Z	artifacts/api-server typecheck$ tsc -p tsconfig.json --noEmit
+2026-07-25T17:13:37.724Z	artifacts/api-server typecheck: Done
+2026-07-25T17:13:37.724Z	artifacts/sercaw typecheck$ tsc -p tsconfig.json --noEmit
+2026-07-25T17:13:45.513Z	artifacts/mockup-sandbox typecheck: Done
+2026-07-25T17:13:45.515Z	scripts typecheck$ tsc -p tsconfig.json --noEmit
+2026-07-25T17:13:47.649Z	scripts typecheck: Done
+2026-07-25T17:13:50.861Z	artifacts/sercaw typecheck: Done
+2026-07-25T17:13:51.385Z	Scope: 8 of 9 workspace projects
+2026-07-25T17:13:51.393Z	artifacts/mockup-sandbox build$ vite build
+2026-07-25T17:13:51.945Z	artifacts/mockup-sandbox build: vite v7.3.6 building client environment for production...
+2026-07-25T17:13:52.033Z	artifacts/mockup-sandbox build: transforming...
+2026-07-25T17:13:53.432Z	artifacts/mockup-sandbox build: ✓ 30 modules transformed.
+2026-07-25T17:13:53.583Z	artifacts/mockup-sandbox build: rendering chunks...
+2026-07-25T17:13:53.593Z	artifacts/mockup-sandbox build: computing gzip size...
+2026-07-25T17:13:53.603Z	artifacts/mockup-sandbox build: dist/index.html                   4.45 kB │ gzip:  1.24 kB
+2026-07-25T17:13:53.605Z	artifacts/mockup-sandbox build: dist/assets/index-D3zZPnxY.css   88.21 kB │ gzip: 14.76 kB
+2026-07-25T17:13:53.607Z	artifacts/mockup-sandbox build: dist/assets/index-BuZVkbMM.js   187.73 kB │ gzip: 59.52 kB
+2026-07-25T17:13:53.608Z	artifacts/mockup-sandbox build: ✓ built in 1.62s
+2026-07-25T17:13:53.651Z	artifacts/mockup-sandbox build: Done
+2026-07-25T17:13:53.653Z	artifacts/api-server build$ node ./build.mjs
+2026-07-25T17:13:53.653Z	artifacts/sercaw build$ vite build --config vite.config.ts
+2026-07-25T17:13:54.077Z	artifacts/sercaw build: failed to load config from /opt/buildhome/repo/artifacts/sercaw/vite.config.ts
+2026-07-25T17:13:54.078Z	artifacts/sercaw build: error during build:
+2026-07-25T17:13:54.078Z	artifacts/sercaw build: Error: PORT environment variable is required but was not provided.
+2026-07-25T17:13:54.078Z	artifacts/sercaw build:     at file:///opt/buildhome/repo/artifacts/sercaw/node_modules/.vite-temp/vite.config.ts.timestamp-1784999633931-aab87b9c6e05b.mjs:10:9
+2026-07-25T17:13:54.078Z	artifacts/sercaw build:     at ModuleJob.run (node:internal/modules/esm/module_job:274:25)
+2026-07-25T17:13:54.079Z	artifacts/sercaw build:     at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:644:26)
+2026-07-25T17:13:54.079Z	artifacts/sercaw build:     at async loadConfigFromBundledFile (file:///opt/buildhome/repo/node_modules/.pnpm/vite@7.3.6_@types+node@25.9.4_jiti@2.7.0_lightningcss@1.32.0_tsx@4.23.0_yaml@2.9.0/node_modules/vite/dist/node/chunks/config.js:35996:12)
+2026-07-25T17:13:54.079Z	artifacts/sercaw build:     at async bundleAndLoadConfigFile (file:///opt/buildhome/repo/node_modules/.pnpm/vite@7.3.6_@types+node@25.9.4_jiti@2.7.0_lightningcss@1.32.0_tsx@4.23.0_yaml@2.9.0/node_modules/vite/dist/node/chunks/config.js:35884:17)
+2026-07-25T17:13:54.079Z	artifacts/sercaw build:     at async loadConfigFromFile (file:///opt/buildhome/repo/node_modules/.pnpm/vite@7.3.6_@types+node@25.9.4_jiti@2.7.0_lightningcss@1.32.0_tsx@4.23.0_yaml@2.9.0/node_modules/vite/dist/node/chunks/config.js:35851:42)
+2026-07-25T17:13:54.079Z	artifacts/sercaw build:     at async resolveConfig (file:///opt/buildhome/repo/node_modules/.pnpm/vite@7.3.6_@types+node@25.9.4_jiti@2.7.0_lightningcss@1.32.0_tsx@4.23.0_yaml@2.9.0/node_modules/vite/dist/node/chunks/config.js:35500:22)
+2026-07-25T17:13:54.079Z	artifacts/sercaw build:     at async createBuilder (file:///opt/buildhome/repo/node_modules/.pnpm/vite@7.3.6_@types+node@25.9.4_jiti@2.7.0_lightningcss@1.32.0_tsx@4.23.0_yaml@2.9.0/node_modules/vite/dist/node/chunks/config.js:33955:19)
+2026-07-25T17:13:54.079Z	artifacts/sercaw build:     at async CAC.<anonymous> (file:///opt/buildhome/repo/node_modules/.pnpm/vite@7.3.6_@types+node@25.9.4_jiti@2.7.0_lightningcss@1.32.0_tsx@4.23.0_yaml@2.9.0/node_modules/vite/dist/node/cli.js:629:10)
+2026-07-25T17:13:54.085Z	artifacts/sercaw build: Failed
+2026-07-25T17:13:54.100Z	/opt/buildhome/repo/artifacts/sercaw:
+2026-07-25T17:13:54.102Z	 ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/sercaw@0.0.0 build: `vite build --config vite.config.ts`
+2026-07-25T17:13:54.102Z	Exit status 1
+2026-07-25T17:13:54.150Z	 ELIFECYCLE  Command failed with exit code 1.
+2026-07-25T17:13:54.173Z	Failed: error occurred while running build command
